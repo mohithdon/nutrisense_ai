@@ -2,203 +2,303 @@
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Flask-3.1.2-black?logo=flask)
-![Machine Learning](https://img.shields.io/badge/Machine_Learning-Scikit--learn-orange)
+![Machine Learning](https://img.shields.io/badge/Machine_Learning-Random_Forest-orange)
+![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.7.2-F7931E?logo=scikitlearn)
 ![Accuracy](https://img.shields.io/badge/Test_Accuracy-95.30%25-brightgreen)
 ![Dataset](https://img.shields.io/badge/Dataset-20%2C758_Records-blue)
 
-**NutriSense AI** is a machine-learning-powered web application that analyzes an individual's body measurements, dietary habits, and lifestyle information to predict a dataset-derived health risk category.
+NutriSense AI is a machine-learning-powered health risk analyzer that uses lifestyle and physical attributes to predict dataset-derived weight-related risk categories.
 
-The application uses a trained Random Forest classification model to categorize inputs into three groups: Low Risk, Moderate Risk, and High Risk. It also provides BMI calculations, prediction probabilities, and personalized general lifestyle suggestions through an interactive web interface.
+The application combines a trained Random Forest classification model with a Flask backend and an interactive web interface. Users can enter personal lifestyle information and receive a predicted risk category, model confidence, BMI information, and general lifestyle recommendations.
+
+> **Disclaimer:** NutriSense AI is an educational machine learning project. Its predictions are based on patterns in the training dataset and are not medically validated. It is not intended to diagnose, prevent, or treat any medical condition.
 
 ---
 
-## 🚀 Project Overview
+## 📌 Project Overview
 
-NutriSense AI aims to demonstrate how machine learning can be integrated into a web application to analyze lifestyle and dietary information.
+NutriSense AI analyzes lifestyle-related information such as age, height, weight, eating habits, water consumption, physical activity, and transportation methods.
 
-Users can enter their personal measurements and lifestyle details to receive:
+The trained machine learning model classifies the input into one of three dataset-derived categories:
 
-- A predicted risk category.
-- Model confidence and probability scores.
-- BMI calculation and category.
-- General lifestyle suggestions.
-- Prediction history and statistical summaries.
+- 🟢 **Low Risk**
+- 🟡 **Moderate Risk**
+- 🔴 **High Risk**
+
+The project demonstrates how machine learning can be integrated into a full-stack web application using Python, Flask, and HTML/CSS/JavaScript.
+
+### 🎯 Objectives
+
+- Build a machine learning model for weight-related category prediction.
+- Analyze lifestyle and physical attributes from a structured dataset.
+- Compare Logistic Regression and Random Forest models.
+- Integrate the selected model into a Flask web application.
+- Provide an interactive interface for predictions and results.
+- Display model confidence, BMI information, and general recommendations.
 
 ---
 
 ## ✨ Key Features
 
-- 🧠 **Machine Learning Prediction:** Classifies inputs into Low, Moderate, or High Risk groups.
-- 📊 **Prediction Confidence:** Displays the model's confidence and probability distribution.
-- ⚖️ **BMI Calculator:** Automatically calculates BMI using height and weight.
-- 💡 **Personalized Suggestions:** Generates general lifestyle suggestions based on submitted information.
-- 📋 **Prediction History:** Maintains a history of predictions during the current server session.
-- 📈 **Statistics Dashboard:** Displays prediction statistics and risk distribution.
-- 🌐 **REST API:** Provides endpoints for predictions, BMI, history, statistics, and application health.
-- 📱 **Responsive Web Interface:** Interactive frontend built using HTML, CSS, and JavaScript.
+- **Machine Learning Prediction:** Uses a trained Random Forest classification model.
+- **Lifestyle Analysis:** Evaluates 16 input features related to physical attributes and lifestyle habits.
+- **Three Risk Categories:** Displays Low, Moderate, and High Risk predictions.
+- **BMI Calculator:** Calculates Body Mass Index using height and weight.
+- **Model Confidence:** Displays the model's predicted class confidence.
+- **Probability Distribution:** Shows the model's output probabilities for all three categories.
+- **Personalized Recommendations:** Provides general suggestions based on submitted inputs.
+- **Prediction History:** Displays previous predictions during the current server session.
+- **Statistics Dashboard:** Shows prediction statistics.
+- **Responsive Interface:** Supports desktop and mobile screen sizes.
+- **REST API:** Provides Flask endpoints for prediction and related operations.
 
 ---
 
-## 🧠 Machine Learning Model
+## 🤖 Machine Learning Approach
 
-Two machine learning algorithms were evaluated during model development.
+The project compares two classification algorithms:
 
-| Algorithm | Average 5-Fold CV Accuracy |
+1. Logistic Regression
+2. Random Forest Classifier
+
+Both models are trained and evaluated using the same dataset and preprocessing pipeline.
+
+### Data Preprocessing
+
+The preprocessing pipeline includes:
+
+- Removing the unnecessary `id` column.
+- Mapping the original seven dataset labels into three broader categories.
+- Separating numerical and categorical features.
+- Applying StandardScaler to numerical features.
+- Applying OneHotEncoder to categorical features.
+- Splitting the dataset into training and testing sets using stratified sampling.
+
+The preprocessing steps are included inside the saved Scikit-learn pipeline.
+
+### Model Selection
+
+Five-fold cross-validation is used to compare the models. The model with the highest average cross-validation accuracy is selected.
+
+**Random Forest achieved the highest average cross-validation accuracy and was selected as the final model.**
+
+---
+
+## 📊 Model Performance
+
+### Cross-Validation Results
+
+| Algorithm | Average Cross-Validation Accuracy |
 |---|---:|
 | Logistic Regression | 93.24% |
-| **Random Forest** | **94.47%** |
+| Random Forest | 94.47% |
 
-Random Forest was selected because it achieved the higher average cross-validation accuracy.
+### Final Model Evaluation
 
-### Model Performance
+The selected Random Forest model was evaluated on a separate hold-out test set.
 
-| Evaluation Metric | Result |
+| Metric | Result |
 |---|---:|
-| Selected Algorithm | Random Forest |
-| Cross-Validation Accuracy | 94.47% |
-| Hold-Out Test Accuracy | **95.30%** |
-| Training Data | 80% |
-| Testing Data | 20% |
+| Test Accuracy | 95.30% |
+| Training/Test Split | 80% / 20% |
 | Cross-Validation | 5-Fold |
+| Selected Algorithm | Random Forest |
+| Input Features | 16 |
+| Output Categories | 3 |
 
 ### Classification Report
 
-| Risk Group | Precision | Recall | F1-Score |
+| Category | Precision | Recall | F1-Score |
 |---|---:|---:|---:|
 | Low Risk | 0.96 | 0.95 | 0.95 |
 | Moderate Risk | 0.89 | 0.92 | 0.90 |
 | High Risk | 0.98 | 0.97 | 0.98 |
 | **Overall Accuracy** | | | **0.95** |
 
-The reported performance is based on the held-out test dataset and does not represent clinical validation or guaranteed real-world accuracy.
+*Note: The 95.30% accuracy is the result obtained on the project's hold-out test split. It does not represent clinical accuracy or guarantee performance on real-world users.*
 
 ---
 
-## 🧬 Dataset Information
+## 📂 Dataset Information
 
-The project uses an obesity-level dataset containing:
+The project uses the `obesity_level.csv` dataset.
 
-- **20,758 records**
-- **16 input features**
-- **7 original target categories**
-- **3 grouped prediction categories**
+| Dataset Detail | Information |
+|---|---|
+| Total Records | 20,758 |
+| Original Columns | 18 |
+| Input Features Used | 16 |
+| Target Column | `0be1dad` |
+| Missing Values | None |
+| Original Target Classes | 7 |
+| Final Output Categories | 3 |
 
 ### Input Features
 
-| Category | Features |
+The model uses the following 16 features:
+
+| Feature | Description |
 |---|---|
-| Body Measurements | Age, Gender, Height, Weight |
-| Family History | Family history of overweight |
-| Dietary Habits | High-calorie food consumption, vegetable consumption, number of main meals, eating between meals |
-| Lifestyle | Smoking, water consumption, calorie monitoring, physical activity, technology usage |
-| Other Habits | Alcohol consumption, transportation method |
+| Gender | Gender |
+| Age | Age in years |
+| Height | Height in meters |
+| Weight | Weight in kilograms |
+| family_history_with_overweight | Family history of overweight |
+| FAVC | Frequent consumption of high-calorie food |
+| FCVC | Frequency of vegetable consumption |
+| NCP | Number of main meals |
+| CAEC | Consumption of food between meals |
+| SMOKE | Smoking habit |
+| CH2O | Daily water consumption |
+| SCC | Monitoring of calorie consumption |
+| FAF | Physical activity frequency |
+| TUE | Time spent using technological devices |
+| CALC | Alcohol consumption frequency |
+| MTRANS | Main mode of transportation |
 
-### Prediction Categories
+### Target Category Mapping
 
-The original seven dataset labels are grouped into three output categories.
+The original dataset contains seven target labels. These are grouped into three categories for this project.
 
-| Prediction Category | Original Dataset Labels |
+| Original Dataset Labels | Project Category |
 |---|---|
-| Low Risk | Insufficient Weight, Normal Weight |
-| Moderate Risk | Overweight Level I, Overweight Level II |
-| High Risk | Obesity Type I, Obesity Type II, Obesity Type III |
+| Insufficient_Weight, `0rmal_Weight` | Low Risk |
+| Overweight_Level_I, Overweight_Level_II | Moderate Risk |
+| Obesity_Type_I, Obesity_Type_II, Obesity_Type_III | High Risk |
 
-The original dataset contains the label `0rmal_Weight`, which is retained as written in the source data.
+*Note: The dataset contains the label `0rmal_Weight` with a zero at the beginning. This original spelling is retained during preprocessing.*
+
+The three categories are project-defined groupings of the dataset labels. They are not clinically validated medical risk classifications.
 
 ---
 
-## ⚙️ Technology Stack
+## 🛠️ Technology Stack
 
-| Component | Technology |
+| Technology | Purpose |
 |---|---|
-| Programming Language | Python |
-| Machine Learning | Scikit-learn |
-| Web Framework | Flask |
-| Data Processing | Pandas, NumPy |
-| Frontend | HTML5, CSS3, JavaScript |
-| Model Serialization | Pickle |
+| Python | Main programming language |
+| Flask | Backend web framework |
+| Pandas | Dataset processing |
+| NumPy | Numerical operations |
+| Scikit-learn | Machine learning and preprocessing |
+| Random Forest | Final classification algorithm |
+| HTML5 | Web page structure |
+| CSS3 | Styling and responsive design |
+| JavaScript | Frontend interactions and API communication |
+| Pickle | Saving and loading trained model artifacts |
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-NutriSense-AI/
+nutrisense_ai/
 │
-├── app.py
-├── train_model.py
-├── check_dataset.py
-│
-├── obesity_level.csv
-├── model.pkl
-├── features.pkl
-│
-├── requirements.txt
-├── .gitignore
-├── README.md
+├── app.py                 # Flask application and prediction API
+├── train_model.py         # Model training and evaluation
+├── check_dataset.py       # Dataset inspection
+├── model.pkl              # Trained machine learning pipeline
+├── features.pkl           # Model input feature information
+├── obesity_level.csv      # Dataset
+├── requirements.txt       # Python dependencies
+├── .gitignore             # Git ignored files configuration
+├── README.md              # Project documentation
 │
 └── templates/
-    └── index.html
+    └── index.html         # Frontend web application
 ```
 
 ---
 
-## ⚡ Installation and Setup
+## ⚙️ Installation and Setup
 
-### 1. Clone the repository
+Follow these steps to run NutriSense AI locally.
 
-Replace the repository URL below with your actual GitHub repository URL after creating it.
+### 1. Clone the Repository
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
-cd NutriSense-AI
+git clone https://github.com/mohithdon/nutrisense_ai.git
 ```
 
-### 2. Install dependencies
+### 2. Navigate to the Project Directory
+
+```bash
+cd nutrisense_ai
+```
+
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the Virtual Environment
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+### 5. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Train the machine learning model
-
-```bash
-python train_model.py
-```
-
-This generates two important files:
-
-- `model.pkl` – Stores the trained machine learning pipeline.
-- `features.pkl` – Stores the input feature names required by the model.
-
-### 4. Run the Flask application
+### 6. Run the Application
 
 ```bash
 python app.py
 ```
 
-### 5. Open the application
+### 7. Open the Application
 
 Open your browser and visit:
 
 ```text
-http://127.0.0.1:5000
+http://localhost:5000
 ```
 
-The NutriSense AI dashboard will be displayed.
+The NutriSense AI web application should now be running locally.
 
 ---
 
-## 🔬 How the Application Works
+## 🔄 Application Workflow
 
-1. **User Input:** The user enters body measurements, dietary habits, and lifestyle information.
-2. **BMI Calculation:** BMI is calculated automatically using height and weight.
-3. **Data Preparation:** The submitted information is converted into the required input format.
-4. **Preprocessing:** The machine learning pipeline applies numerical scaling and categorical encoding.
-5. **Model Prediction:** The Random Forest classifier predicts one of the three grouped risk categories.
-6. **Probability Calculation:** The application obtains probability scores for all three categories.
-7. **Recommendations:** General lifestyle suggestions are generated based on the submitted information.
-8. **Result Display:** The frontend displays the prediction, probabilities, BMI, and suggestions.
+```text
+User Enters Lifestyle Information
+              |
+              v
+      Frontend Validation
+              |
+              v
+       Flask Backend
+              |
+              v
+       Input Processing
+              |
+              v
+    Saved ML Pipeline (model.pkl)
+              |
+              v
+    Random Forest Prediction
+              |
+              v
+      Prediction Results
+              |
+              v
+   Risk Category and Confidence
+              |
+              v
+       Results Displayed
+```
 
 ---
 
@@ -238,6 +338,7 @@ The NutriSense AI dashboard will be displayed.
   "CALC": "Sometimes",
   "MTRANS": "Public_Transportation"
 }
+```
 
 ### Example Prediction Response
 
@@ -261,51 +362,50 @@ The NutriSense AI dashboard will be displayed.
 }
 ```
 
-*Note: These percentages represent the model's output for this input, not medical probabilities or a clinical diagnosis.*
+*Note: This is an example based on a prediction produced during local testing. The exact prediction values depend on the input.*
 
-```
-
-**Note:** Height must be provided in meters when using the prediction API. The website automatically converts height entered in centimeters into meters.
+**Important:** Height must be provided in meters when using the prediction API. The website automatically converts height entered in centimeters into meters.
 
 ---
 
-## 📊 Model Evaluation and Validation
+## 📈 Model Evaluation and Validation
 
-The model development process includes:
+The project uses the following evaluation methods:
 
-- Dataset loading and inspection.
-- Target category grouping.
-- Numerical and categorical feature preprocessing.
-- Stratified train-test splitting.
+- Train-test split with stratified sampling.
 - Five-fold cross-validation.
-- Comparison of Logistic Regression and Random Forest.
-- Model selection based on cross-validation accuracy.
-- Hold-out test evaluation.
-- Classification report generation.
+- Accuracy comparison between Logistic Regression and Random Forest.
+- Precision, recall, and F1-score analysis.
+- Evaluation of the selected model on a separate test set.
+
+The final trained preprocessing and prediction pipeline is saved in `model.pkl`. The feature information is saved in `features.pkl`.
 
 ---
 
-## ⚠️ Limitations and Disclaimer
+## 🔒 Important Notes and Limitations
 
-- This project is an educational machine learning demonstration, not a medical diagnostic system.
-- The three prediction groups are derived from obesity-level dataset labels and are not clinically validated medical risk categories.
-- Model confidence represents the classifier's output, not a medical probability.
-- The model's performance on the supplied dataset does not guarantee equivalent performance on real-world populations.
-- Adult BMI reference ranges may not be appropriate for individuals under 18.
-- Prediction history and statistics are stored in application memory and reset when the Flask server restarts.
+- This project is developed for educational and demonstration purposes.
+- Predictions are based on patterns learned from the provided dataset.
+- The three risk categories are not medically validated classifications.
+- Model confidence represents the model's output score, not medical certainty.
+- BMI is a general screening measure and is not a complete assessment of health.
+- Adult BMI categories may not be appropriate for individuals under 18.
+- Prediction history and statistics are maintained in memory and may reset when the Flask server restarts.
+- Real-world performance may differ from the reported test results.
 
-Users should consult qualified healthcare professionals for medical advice or health assessments.
+**NutriSense AI should not be used as a substitute for professional medical advice, diagnosis, or treatment.**
 
 ---
 
-## 🔮 Future Improvements
+## 🚀 Future Improvements
 
-- Deploy the application to a cloud hosting platform.
-- Improve model evaluation using additional datasets.
-- Add more comprehensive data visualizations.
-- Introduce user authentication and persistent prediction history.
-- Improve recommendation generation.
-- Explore multilingual support.
+- Deploy the application to a public cloud platform.
+- Add more diverse and representative training data.
+- Explore additional machine learning algorithms.
+- Improve model interpretability using feature importance and explainability techniques.
+- Add persistent storage for prediction history.
+- Improve input validation and application security.
+- Conduct further evaluation using independent datasets.
 
 ---
 
@@ -313,13 +413,18 @@ Users should consult qualified healthcare professionals for medical advice or he
 
 **Mohith Jhajhrya**
 
-**Role:** Sole Developer
-
-- GitHub: [mohithdon](https://github.com/mohithdon)
-- Email: mohithjhajhrya@gmail.com
-
-Designed and developed NutriSense AI, including its web interface, machine learning workflow, Flask backend, model integration, and prediction functionality.
+- **Role:** Sole Developer
+- **GitHub:** [mohithdon](https://github.com/mohithdon)
+- **Email:** mohithjhajhrya@gmail.com
 
 ---
 
-**NutriSense AI – Turning Lifestyle Data into Meaningful Insights.** 🥗
+## ⭐ Support
+
+If you find this project useful or interesting, consider giving the repository a star ⭐ on GitHub.
+
+**GitHub Repository:** [NutriSense AI](https://github.com/mohithdon/nutrisense_ai)
+
+---
+
+*Built with Python, Flask, and Machine Learning.*
